@@ -4,21 +4,26 @@ import sys
 import time
 import urllib
 import psutil
-from pip._vendor import requests
+import requests
+
+# nire api_key -> LT4QN4UG9NFH6UXD
 
 def ram_atera():
+
     # psutil liburutegia erabiliz, %RAM atera
     ram = psutil.virtual_memory()[2]
-    # print("RAM: %" + str(ram))
+    print("RAM: %" + str(ram))
     return ram
 
 def cpu_atera():
+
     # psutil liburutegia erabiliz, %CPU atera
     cpu = psutil.cpu_percent(interval=0.5)
-    # print("CPU: %" + str(cpu))
+    print("CPU: %" + str(cpu))
     return cpu
 
 def handler(sig_num, frame):
+
     kanalahustea(kanalId)
     print('\nSignal handler called with signal ' + str(sig_num))
     print('Check signal number on '
@@ -66,7 +71,6 @@ def channelsortu():
     uria = "https://api.thingspeak.com/channels.json"
     goiburuak = {'Host': 'api.thingspeak.com', 'Content-Type': 'application/x-www-form-urlencoded'}
     edukia = {'api_key': 'LT4QN4UG9NFH6UXD', 'name': 'KanalaLabo1', 'field1': "%CPU", 'field2': "%RAM"}
-
     edukia_encoded = urllib.parse.urlencode(edukia)
     goiburuak['Content-Length'] = str(len(edukia_encoded))
     erantzuna = requests.request(metodoa, uria, data=edukia, headers=goiburuak, allow_redirects=False)
@@ -117,6 +121,9 @@ if __name__ == '__main__':
     kanalId, kanalApi = kanalalortu()
 
     while True:
+
         # Kanala sortuta dago, datuak igoko ditugu
         datuigoera(kanalApi)
+
+        # 15 segunduro igoko ditu datuak
         time.sleep(15)
